@@ -68,4 +68,3 @@ function register(){
         redirect_to("/page_register.php");
     }
 }
-register();
