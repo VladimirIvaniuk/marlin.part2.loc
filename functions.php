@@ -5,7 +5,6 @@ session_start();
  * description: поиск пользователя по эл. адресу
  * @return mixed
  */
-
 function get_user_by_email($email)
 {
     $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
@@ -44,7 +43,9 @@ function set_flash_massage($name, $message){
 // * @return value: null
  */
 function display_flash_message($name){
-    echo $_SESSION["name"];
+    if(isset($_SESSION[$name])){
+        echo "<div class=\"alert alert-{$name} text-dark\" role=\"alert\">{$_SESSION[$name]}</div>";
+    }
     unset($_SESSION[$name]);
 }
 /**
@@ -59,15 +60,12 @@ function register(){
     if(!$user){
         if(add_users($_POST['email'], $_POST['password'])){
             set_flash_massage("success", "Успешная регистрация");
-            display_flash_message("success");
             redirect_to("page_login.php");
         }
     }
     else{
         set_flash_massage('danger', "Этот эл. адрес уже занят другим пользователем.");
-        display_flash_message('danger');
         redirect_to("/page_register.php");
     }
-
 }
 register();

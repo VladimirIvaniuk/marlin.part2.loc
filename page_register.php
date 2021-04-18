@@ -1,4 +1,5 @@
 <?php session_start()?>
+<? require_once "functions.php"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,11 +61,7 @@
                             </div>
                             <div class="col-xl-6 ml-auto mr-auto">
                                 <div class="card p-4 rounded-plus bg-faded">
-                                    <?if($_SESSION['danger']):?>
-                                    <div class="alert alert-danger text-dark" role="alert">
-                                        <strong>Уведомление!</strong> <?=$_SESSION['danger']?>
-                                    </div>
-                                    <?endif;?>
+                                    <?php display_flash_message('danger');?>
                                     <form id="js-login" novalidate="" action="functions.php" method="post">
                                         <div class="form-group">
                                             <label class="form-label" for="emailverify">Email</label>

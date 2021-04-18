@@ -1,4 +1,5 @@
 <? session_start()?>
+<? require_once "functions.php"?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,11 +35,7 @@
             </a>
         </div>
         <div class="card p-4 border-top-left-radius-0 border-top-right-radius-0">
-            <?if($_SESSION['success']):?>
-                <div class="alert alert-success text-dark" role="alert">
-                    <?=$_SESSION['success']?>
-                </div>
-            <?endif;?>
+            <? display_flash_message('success');?>
             <form action="">
                 <div class="form-group">
                     <label class="form-label" for="username">Email</label>
