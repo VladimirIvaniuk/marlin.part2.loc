@@ -79,3 +79,25 @@ function register($data)
         redirect_to("/page_register.php");
     }
 }
+
+function login($data)
+{
+    $email = $data['email'];
+    $password = $data['password'];
+    if (!empty($email)) {
+        $user = get_user_by_email($email);
+        $result = password_verify($password, $user['password']);
+        if ($result) {
+            $_SESSION["is_auth"] = true; //Делаем пользователя авторизованным
+            $_SESSION["login"] = $email; //Записываем в сессию логин пользователя
+            redirect_to("page_profile.html");
+        } else {
+            set_flash_massage('danger', "Неверный пароль");
+            redirect_to("page_login.php");
+        }
+        $_SESSION["is_auth"] = false;
+    }
+    $_SESSION["is_auth"] = false;
+    set_flash_massage('danger', "Неверный логин");
+    redirect_to("page_login.php");
+}
