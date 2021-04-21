@@ -90,14 +90,19 @@ function login($data)
         if ($result) {
             $_SESSION["is_auth"] = true; //Делаем пользователя авторизованным
             $_SESSION["login"] = $email; //Записываем в сессию логин пользователя
-            redirect_to("page_profile.html");
-        } else {
-            set_flash_massage('danger', "Неверный пароль");
-            redirect_to("page_login.php");
+            redirect_to("users.php");
         }
-        $_SESSION["is_auth"] = false;
     }
+    set_flash_massage('danger', "Неверный логин или пароль");
     $_SESSION["is_auth"] = false;
-    set_flash_massage('danger', "Неверный логин");
+    redirect_to("page_login.php");
+}
+function is_not_logged(){
+    if($_SESSION["is_auth"]==false){
+        redirect_to("page_login.php");
+    }
+}
+function logout(){
+    $_SESSION["is_auth"]=false;
     redirect_to("page_login.php");
 }
