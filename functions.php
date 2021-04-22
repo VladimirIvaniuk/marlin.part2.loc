@@ -15,6 +15,10 @@ function get_user_by_email($email)
     return $result;
 }
 
+function get_users(){
+
+}
+
 /**
  * @param string $email
  * @description: добавить пользователя в базу
@@ -80,6 +84,9 @@ function register($data)
     }
 }
 
+/**
+ * @param $data
+ */
 function login($data)
 {
     $email = $data['email'];
@@ -105,4 +112,35 @@ function is_not_logged(){
 function logout(){
     $_SESSION["is_auth"]=false;
     redirect_to("page_login.php");
+}
+function getRole(){
+    $user = get_user_by_email($_SESSION["login"]);
+    if($user["role"]=="admin"){
+        $_SESSION['user']="admin";
+    }else{
+        $_SESSION['user']="user";
+    }
+    return $_SESSION['user'];
+}
+function is_admin(){
+    $user = getRole();
+    if($user=="admin"){
+        return true;
+    }
+    return false;
+}
+function getUser(){
+    $user = get_user_by_email($_SESSION["login"]);
+    return $user;
+}
+function dump($arr, $var_dump = false)
+{
+    echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";
+    if ($var_dump){
+        var_dump($arr);
+    }
+    else{
+        print_r($arr);
+    }
+    echo "</pre>";
 }

@@ -1,6 +1,7 @@
 <? session_start();
 require_once "functions.php";
 is_not_logged();
+dump(is_admin());
 ?>
 <!DOCTYPE html>
 <html lang="en">
