@@ -140,6 +140,46 @@ function getUser(){
     return $user;
 }
 
+function add_user_admin(){
+    $user=add_users();
+    if($user){
+        edit();
+    }
+
+}
+
+/**
+ * @param $username string
+ * @param $job_title string
+ * @param $phone string
+ * @param $address string
+ * @param $user_id int
+ * Description: редактировать профиль
+ * Return value: null
+ */
+function edit($username, $job_title, $phone, $address, $user_id){
+
+}
+
+/**
+ * @param $status
+ * Description: установить статус
+ * @return null
+ */
+function set_status($status){
+    return null;
+}
+
+/**
+ * @param array $image
+ * Description: загрузить аватар
+ */
+function upload_avatar(array $image){
+
+}
+
+
+
 function dump($arr, $var_dump = false)
 {
     echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";

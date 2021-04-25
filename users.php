@@ -78,7 +78,7 @@ $item=getUser();
                                 </span>
                                 <div class="info-card-text flex-1">
 
-                                    <?if(is_admin()):?>
+                                    <?if(is_admin()||($user['id']==$item['id'])):?>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="edit?id=<?=$user['id']?>.html">
                                             <i class="fa fa-edit"></i>
@@ -103,33 +103,6 @@ $item=getUser();
                                             <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                             <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                         </a>
-                                    <?else:?>
-                                        <?if($user['id']==$item['id']):?>
-                                            <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="edit?id=<?=$user['id']?>.html">
-                                                <i class="fa fa-edit"></i>
-                                                Редактировать</a>
-                                            <a class="dropdown-item" href="security.html">
-                                                <i class="fa fa-lock"></i>
-                                                Безопасность</a>
-                                            <a class="dropdown-item" href="status.html">
-                                                <i class="fa fa-sun"></i>
-                                                Установить статус</a>
-                                            <a class="dropdown-item" href="media.html">
-                                                <i class="fa fa-camera"></i>
-                                                Загрузить аватар
-                                            </a>
-                                            <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
-                                                <i class="fa fa-window-close"></i>
-                                                Удалить
-                                            </a>
-                                        </div>
-                                            <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                                Oliver Kopyov
-                                                <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
-                                                <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
-                                            </a>
-                                        <?endif;?>
                                     <?endif;?>
                                     <span class="text-truncate text-truncate-xl">IT Director, Gotbootstrap Inc.</span>
                                 </div>
