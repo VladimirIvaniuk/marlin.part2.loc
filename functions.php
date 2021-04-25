@@ -16,7 +16,12 @@ function get_user_by_email($email)
 }
 
 function get_users(){
-
+    $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
+    $sql = "SELECT * FROM users";
+    $statement = $pdo->prepare($sql);
+    $statement->execute();
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
 }
 
 /**
@@ -27,7 +32,7 @@ function get_users(){
  */
 function add_users($email, $password)
 {
-    $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
+    $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
     $sql = "INSERT INTO users (email, password) VALUES (:email, :password)";
     $statement = $pdo->prepare($sql);
     $result = $statement->execute(["email" => $email, "password" => password_hash($password, PASSWORD_DEFAULT)]);
@@ -73,6 +78,7 @@ function register($data)
     $email = $data['email'];
     $password = $data['password'];
     $user = get_user_by_email($email);
+
     if (!$user) {
         if (add_users($email, $password)) {
             set_flash_massage("success", "Успешная регистрация");
@@ -80,7 +86,7 @@ function register($data)
         }
     } else {
         set_flash_massage('danger', "Этот эл. адрес уже занят другим пользователем.");
-        redirect_to("/page_register.php");
+        redirect_to("page_register.php");
     }
 }
 
@@ -133,6 +139,7 @@ function getUser(){
     $user = get_user_by_email($_SESSION["login"]);
     return $user;
 }
+
 function dump($arr, $var_dump = false)
 {
     echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";
