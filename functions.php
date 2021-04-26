@@ -15,7 +15,8 @@ function get_user_by_email($email)
     return $result;
 }
 
-function get_users(){
+function get_users()
+{
     $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
     $sql = "SELECT * FROM users";
     $statement = $pdo->prepare($sql);
@@ -36,7 +37,9 @@ function add_users($email, $password)
     $sql = "INSERT INTO users (email, password) VALUES (:email, :password)";
     $statement = $pdo->prepare($sql);
     $result = $statement->execute(["email" => $email, "password" => password_hash($password, PASSWORD_DEFAULT)]);
-    return $result;
+    $query = $pdo->query("SELECT LAST_INSERT_ID()");
+    $id = $query->fetchColumn();
+    return $id;
 }
 
 /**
@@ -110,42 +113,58 @@ function login($data)
     $_SESSION["is_auth"] = false;
     redirect_to("page_login.php");
 }
-function is_not_logged(){
-    if($_SESSION["is_auth"]==false){
+
+function is_not_logged()
+{
+    if ($_SESSION["is_auth"] == false) {
         redirect_to("page_login.php");
     }
 }
-function logout(){
-    $_SESSION["is_auth"]=false;
+
+function logout()
+{
+    $_SESSION["is_auth"] = false;
     redirect_to("page_login.php");
 }
-function getRole(){
+
+function getRole()
+{
     $user = get_user_by_email($_SESSION["login"]);
-    if($user["role"]=="admin"){
-        $_SESSION['user']="admin";
-    }else{
-        $_SESSION['user']="user";
+    if ($user["role"] == "admin") {
+        $_SESSION['user'] = "admin";
+    } else {
+        $_SESSION['user'] = "user";
     }
     return $_SESSION['user'];
 }
-function is_admin(){
+
+function is_admin()
+{
     $user = getRole();
-    if($user=="admin"){
+    if ($user == "admin") {
         return true;
     }
     return false;
 }
-function getUser(){
+
+function getUser()
+{
     $user = get_user_by_email($_SESSION["login"]);
     return $user;
 }
 
-function add_user_admin(){
-    $user=add_users();
-    if($user){
-        edit();
+function add_user_admin($data)
+{
+    $email = $data['email'];
+    $password = $data['password'];
+    $user = get_user_by_email($email);
+    if (!$user) {
+        $id_user = add_users($email, $password);
+        edit($data, $id_user);
+    } else {
+        set_flash_massage('danger', "Этот эл. адрес уже занят другим пользователем.");
+        redirect_to("create_user.php");
     }
-
 }
 
 /**
@@ -157,8 +176,20 @@ function add_user_admin(){
  * Description: редактировать профиль
  * Return value: null
  */
-function edit($username, $job_title, $phone, $address, $user_id){
-
+function edit($data, $user_id)
+{
+    $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
+    $data = [
+        'username' => $data['username'],
+        'job_title' => $data['job_title'],
+        'phone' => $data['phone'],
+        'address' => $data['address'],
+        'user_id' => $user_id,
+    ];
+    $sql = "UPDATE users SET username=:username, job_title=:job_title, phone=:phone , address=:address WHERE id=:user_id";
+    $stmt = $pdo->prepare($sql);
+    $tt=$stmt->execute($data);
+dump($tt);
 }
 
 /**
@@ -166,7 +197,8 @@ function edit($username, $job_title, $phone, $address, $user_id){
  * Description: установить статус
  * @return null
  */
-function set_status($status){
+function set_status($status)
+{
     return null;
 }
 
@@ -174,19 +206,23 @@ function set_status($status){
  * @param array $image
  * Description: загрузить аватар
  */
-function upload_avatar(array $image){
-
+function upload_avatar(array $image)
+{
+    $from=$image["image"]["tmp_name"];
+    $filename=$image["image"]["name"];
+    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+    $filename = uniqid() . "." . $extension;
+    $to = "images/".$filename;
+    $result = move_uploaded_file($from, $to);
 }
-
 
 
 function dump($arr, $var_dump = false)
 {
     echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";
-    if ($var_dump){
+    if ($var_dump) {
         var_dump($arr);
-    }
-    else{
+    } else {
         print_r($arr);
     }
     echo "</pre>";

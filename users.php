@@ -52,7 +52,7 @@ $item=getUser();
                 <div class="col-xl-12">
 
                     <?if(is_admin()):?>
-                    <a class="btn btn-success" href="create_user.html">Добавить</a>
+                    <a class="btn btn-success" href="create_user.php">Добавить</a>
                     <?endif;?>
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                         <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
