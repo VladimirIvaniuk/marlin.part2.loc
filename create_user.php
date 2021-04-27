@@ -1,3 +1,5 @@
+<? session_start();
+require_once "functions.php";?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,13 +35,11 @@
         </div>
     </nav>
     <main id="js-page-content" role="main" class="page-content mt-3">
+        <?php display_flash_message('danger');?>
         <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-plus-circle'></i> Добавить пользователя
             </h1>
-
-
-
         </div>
         <form action="create_new_user.php" method="post" enctype="multipart/form-data">
 

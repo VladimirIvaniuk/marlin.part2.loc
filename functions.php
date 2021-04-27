@@ -153,14 +153,16 @@ function getUser()
     return $user;
 }
 
-function add_user_admin($data)
+function add_user_admin($data, $file)
 {
     $email = $data['email'];
     $password = $data['password'];
     $user = get_user_by_email($email);
     if (!$user) {
         $id_user = add_users($email, $password);
-        edit($data, $id_user);
+        edit($data, $id_user, $file);
+        set_flash_massage('success', "Добавлен новый пользователь");
+        redirect_to("users.php");
     } else {
         set_flash_massage('danger', "Этот эл. адрес уже занят другим пользователем.");
         redirect_to("create_user.php");
@@ -176,20 +178,23 @@ function add_user_admin($data)
  * Description: редактировать профиль
  * Return value: null
  */
-function edit($data, $user_id)
+function edit($data, $user_id, $file)
 {
     $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
+    $image = upload_avatar($file);
+    $status = set_status($data['status']);
     $data = [
         'username' => $data['username'],
         'job_title' => $data['job_title'],
         'phone' => $data['phone'],
         'address' => $data['address'],
+        "image" => $image,
+        "status" => $status,
         'user_id' => $user_id,
     ];
-    $sql = "UPDATE users SET username=:username, job_title=:job_title, phone=:phone , address=:address WHERE id=:user_id";
+    $sql = "UPDATE users SET username=:username, job_title=:job_title, phone=:phone, address=:address, image=:image, status=:status WHERE id=:user_id";
     $stmt = $pdo->prepare($sql);
-    $tt=$stmt->execute($data);
-dump($tt);
+    $stmt->execute($data);
 }
 
 /**
@@ -199,7 +204,7 @@ dump($tt);
  */
 function set_status($status)
 {
-    return null;
+    return $status;
 }
 
 /**
@@ -208,15 +213,14 @@ function set_status($status)
  */
 function upload_avatar(array $image)
 {
-    $from=$image["image"]["tmp_name"];
-    $filename=$image["image"]["name"];
+    $from = $image["avatar"]["tmp_name"];
+    $filename = $image["avatar"]["name"];
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = uniqid() . "." . $extension;
-    $to = "images/".$filename;
-    $result = move_uploaded_file($from, $to);
+    $to = "images/" . $filename;
+    move_uploaded_file($from, $to);
+    return $filename;
 }
-
-
 function dump($arr, $var_dump = false)
 {
     echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";
