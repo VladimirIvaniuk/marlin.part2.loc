@@ -72,7 +72,7 @@ $item=getUser();
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                             <div class="d-flex flex-row align-items-center">
                                 <span class="status status-success mr-3">
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('img/demo/avatars/avatar-b.png'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('images/<?=$user["image"]?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
 
@@ -97,12 +97,12 @@ $item=getUser();
                                         </a>
                                     </div>
                                         <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                            Oliver Kopyov
+                                           <?=$user["username"]?>
                                             <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                             <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                         </a>
                                     <?endif;?>
-                                    <span class="text-truncate text-truncate-xl">IT Director, Gotbootstrap Inc.</span>
+                                    <span class="text-truncate text-truncate-xl"><?=$user["username"]?></span>
                                 </div>
                                 <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                                     <span class="collapsed-hidden">+</span>
@@ -113,19 +113,19 @@ $item=getUser();
                         <div class="card-body p-0 collapse show">
                             <div class="p-3">
                                 <a href="tel:+13174562564" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                    <i class="fas fa-mobile-alt text-muted mr-2"></i> +1 317-456-2564</a>
-                                <a href="mailto:oliver.kopyov@smartadminwebapp.com" class="mt-1 d-block fs-sm fw-400 text-dark">
-                                    <i class="fas fa-mouse-pointer text-muted mr-2"></i> oliver.kopyov@smartadminwebapp.com</a>
+                                    <i class="fas fa-mobile-alt text-muted mr-2"></i> <?=$user["phone"]?></a>
+                                <a href="mailto:<?=$user["email"]?>" class="mt-1 d-block fs-sm fw-400 text-dark">
+                                    <i class="fas fa-mouse-pointer text-muted mr-2"></i> <?=$user["email"]?></a>
                                 <address class="fs-sm fw-400 mt-4 text-muted">
-                                    <i class="fas fa-map-pin mr-2"></i> 15 Charist St, Detroit, MI, 48212, USA</address>
+                                    <i class="fas fa-map-pin mr-2"></i> <?=$user["address"]?></address>
                                 <div class="d-flex flex-row">
-                                    <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#4680C2">
+                                    <a href="<?=$user["vk"]?>" class="mr-2 fs-xxl" style="color:#4680C2">
                                         <i class="fab fa-vk"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#38A1F3">
+                                    <a href="<?=$user["telegram"]?>;" class="mr-2 fs-xxl" style="color:#38A1F3">
                                         <i class="fab fa-telegram"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="mr-2 fs-xxl" style="color:#E1306C">
+                                    <a href="<?=$user["instagram"]?>" class="mr-2 fs-xxl" style="color:#E1306C">
                                         <i class="fab fa-instagram"></i>
                                     </a>
                                 </div>

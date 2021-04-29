@@ -182,17 +182,20 @@ function edit($data, $user_id, $file)
 {
     $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
     $image = upload_avatar($file);
-    $status = set_status($data['status']);
     $data = [
         'username' => $data['username'],
         'job_title' => $data['job_title'],
         'phone' => $data['phone'],
         'address' => $data['address'],
         "image" => $image,
-        "status" => $status,
+        "status" => $data['status'],
+        "vk" => $data['vk'],
+        "telegram" => $data['telegram'],
+        "instagram" => $data['instagram'],
         'user_id' => $user_id,
     ];
-    $sql = "UPDATE users SET username=:username, job_title=:job_title, phone=:phone, address=:address, image=:image, status=:status WHERE id=:user_id";
+    $sql = "UPDATE users SET username=:username, job_title=:job_title, phone=:phone, address=:address, 
+            image=:image, status=:status, vk=:vk, instagram=:instagram, instagram=:instagram WHERE id=:user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute($data);
 }
@@ -221,6 +224,14 @@ function upload_avatar(array $image)
     move_uploaded_file($from, $to);
     return $filename;
 }
+//function add_social_link($data){
+//    $array_social_links=[
+//        'vk'=>$data['vk'],
+//        'telegram'=>$data['telegram'],
+//        'instagram'=>$data['instagram'],
+//    ];
+//    return $array_social_links;
+//}
 function dump($arr, $var_dump = false)
 {
     echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";
