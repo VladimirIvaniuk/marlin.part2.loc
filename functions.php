@@ -191,21 +191,11 @@ function add_user_admin($data, $file)
 function edit($data, $user_id)
 {
     $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
-    $image = "";
     if(isset($data["avatar"])){
-        $image = upload_avatar($data["avatar"]);
+        $data['image'] = upload_avatar($data["avatar"]);
+        unset($data['avatar']);
+        unset($data['password']);
     }
-    $data = [
-        'username' => $data['username'],
-        'job_title' => $data['job_title'],
-        'phone' => $data['phone'],
-        'address' => $data['address'],
-        "image" => $image,
-        "status" => $data['status'],
-        "vk" => $data['vk'],
-        "telegram" => $data['telegram'],
-        "instagram" => $data['instagram'],
-    ];
     $fields = '';
     foreach($data as $key => $value) {
         $fields .= $key . "=:" . $key . ",";

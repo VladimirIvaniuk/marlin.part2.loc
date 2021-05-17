@@ -89,13 +89,13 @@ require_once "functions.php";?>
                                 <!-- email -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" name="email" id="simpleinput" class="form-control">
+                                    <input type="text" name="email" required id="simpleinput" class="form-control">
                                 </div>
 
                                 <!-- password -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Пароль</label>
-                                    <input type="password" name="password" id="simpleinput" class="form-control">
+                                    <input type="password" name="password" required id="simpleinput" class="form-control">
                                 </div>
 
                                 
