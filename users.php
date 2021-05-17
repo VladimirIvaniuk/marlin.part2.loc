@@ -3,6 +3,8 @@ require_once "functions.php";
 is_not_logged();
 $users=get_users();
 $item=getUser();
+//dump($users);
+dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +80,7 @@ $item=getUser();
 
                                     <?if(is_admin()||($user['id']==$item['id'])):?>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="edit?id=<?=$user['id']?>.html">
+                                        <a class="dropdown-item" href="edit.php?id=<?=$user['id']?>">
                                             <i class="fa fa-edit"></i>
                                         Редактировать</a>
                                         <a class="dropdown-item" href="security.html">

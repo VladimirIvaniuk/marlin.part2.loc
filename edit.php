@@ -1,3 +1,11 @@
+<? session_start();
+require_once "functions.php";
+is_not_logged();
+$user=getUser();
+$user_id=(int)$_GET["id"];
+$user_edit=getUserById($user_id);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,10 +31,7 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="page_login.html">Войти</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Выйти</a>
+                    <a class="nav-link" href="logout.php">Выйти</a>
                 </li>
             </ul>
         </div>
@@ -36,9 +41,9 @@
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-plus-circle'></i> Редактировать
             </h1>
-
         </div>
-        <form action="">
+        <?if(is_admin()||($user_id==$user['id']) and (!empty(getUserById($user_id)))):?>
+        <form action="update_user.php?id=<?=$user_id?>" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -50,26 +55,27 @@
                                 <!-- username -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Имя</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Иван иванов">
+                                    <input type="text" id="simpleinput" name="username" class="form-control" value="<?=$user_edit["username"]?>">
                                 </div>
 
                                 <!-- title -->
                                 <div class="form-group">
-                                    <label class="form-label" for="simpleinput">Место работы</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Marlin Веб-разработчик">
+                                    <label class="form-label"  for="simpleinput">Место работы</label>
+                                    <input type="text" name="job_title" id="simpleinput" class="form-control" value="<?=$user_edit["job_title"]?>">
                                 </div>
 
                                 <!-- tel -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Номер телефона</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="8 888 8888 88">
+                                    <input type="text" name="phone" id="simpleinput" class="form-control" value="<?=$user_edit["phone"]?>">
                                 </div>
 
                                 <!-- address -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Адрес</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="Восточные Королевства, Штормград">
+                                    <input type="text" name="address" id="simpleinput" class="form-control" value="<?=$user_edit["address"]?>">
                                 </div>
+<!--                                <input type="hidden" name="id" value="--><?//=$user_id?><!--">-->
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                     <button class="btn btn-warning">Редактировать</button>
                                 </div>
@@ -79,6 +85,11 @@
                 </div>
             </div>
         </form>
+        <?else:?>
+        <? set_flash_massage("danger", "Нет такого пользователя, или вы не админ")?>
+        <? display_flash_message("danger")?>
+            <a href="users.php" class="btn btn-success">Вернуться назад</a>
+        <?php endif;?>
     </main>
 
     <script src="js/vendors.bundle.js"></script>

@@ -14,7 +14,14 @@ function get_user_by_email($email)
     $result = $statement->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
-
+function getUserById($id){
+    $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
+    $sql = "SELECT * FROM users WHERE id = :id";
+    $statement = $pdo->prepare($sql);
+    $statement->execute(["id" => $id]);
+    $result = $statement->fetch(PDO::FETCH_ASSOC);
+    return $result;
+}
 function get_users()
 {
     $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
@@ -158,9 +165,12 @@ function add_user_admin($data, $file)
     $email = $data['email'];
     $password = $data['password'];
     $user = get_user_by_email($email);
+    if($file){
+        $data=$data+$file;
+    }
     if (!$user) {
         $id_user = add_users($email, $password);
-        edit($data, $id_user, $file);
+        edit($data, $id_user);
         set_flash_massage('success', "Добавлен новый пользователь");
         redirect_to("users.php");
     } else {
@@ -178,10 +188,13 @@ function add_user_admin($data, $file)
  * Description: редактировать профиль
  * Return value: null
  */
-function edit($data, $user_id, $file)
+function edit($data, $user_id)
 {
     $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
-    $image = upload_avatar($file);
+    $image = "";
+    if(isset($data["avatar"])){
+        $image = upload_avatar($data["avatar"]);
+    }
     $data = [
         'username' => $data['username'],
         'job_title' => $data['job_title'],
@@ -192,14 +205,16 @@ function edit($data, $user_id, $file)
         "vk" => $data['vk'],
         "telegram" => $data['telegram'],
         "instagram" => $data['instagram'],
-        'user_id' => $user_id,
     ];
-    $sql = "UPDATE users SET username=:username, job_title=:job_title, phone=:phone, address=:address, 
-            image=:image, status=:status, vk=:vk, instagram=:instagram, instagram=:instagram WHERE id=:user_id";
+    $fields = '';
+    foreach($data as $key => $value) {
+        $fields .= $key . "=:" . $key . ",";
+    }
+    $fields = rtrim($fields, ',');
+    $sql = "UPDATE users SET $fields WHERE id=$user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute($data);
 }
-
 /**
  * @param $status
  * Description: установить статус
@@ -216,8 +231,8 @@ function set_status($status)
  */
 function upload_avatar(array $image)
 {
-    $from = $image["avatar"]["tmp_name"];
-    $filename = $image["avatar"]["name"];
+    $from = $image["tmp_name"];
+    $filename = $image["name"];
     $extension = pathinfo($filename, PATHINFO_EXTENSION);
     $filename = uniqid() . "." . $extension;
     $to = "images/" . $filename;
