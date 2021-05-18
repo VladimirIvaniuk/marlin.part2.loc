@@ -3,8 +3,6 @@ require_once "functions.php";
 is_not_logged();
 $users=get_users();
 $item=getUser();
-//dump($users);
-dump($_SESSION);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -104,7 +102,7 @@ dump($_SESSION);
                                             <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                         </a>
                                     <?endif;?>
-                                    <span class="text-truncate text-truncate-xl"><?=$user["username"]?></span>
+                                    <span class="text-truncate text-truncate-xl"><a href="page_profile.php?id=<?=$user['id']?>"><?=$user["username"]?></a></span>
                                 </div>
                                 <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                                     <span class="collapsed-hidden">+</span>

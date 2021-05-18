@@ -1,8 +1,12 @@
 <?php
 session_start();
 require_once "functions.php";
+require_once "functions.php";
+is_not_logged();
 $user=getUserById($_GET['id']);
-dump($user);
+if(!$user){
+    redirect_to('users.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -25,15 +29,15 @@ dump($user);
             <div class="collapse navbar-collapse" id="navbarColor02">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item ">
-                        <a class="nav-link" href="#">Главная</a>
+                        <a class="nav-link" href="users.php">Главная</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Войти</a>
+                        <a class="nav-link" href="page_login.php">Войти</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Выйти</a>
+                        <a class="nav-link" href="logout.php">Выйти</a>
                     </li>
                 </ul>
             </div>
