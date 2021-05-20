@@ -1,3 +1,10 @@
+<? session_start();
+require_once "functions.php";
+is_not_logged();
+$user=getUserById($_GET['id']);
+$item=getUser();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +45,8 @@
             </h1>
 
         </div>
-        <form action="">
+        <?if(is_admin()||($user['id']==$_GET['id'])):?>
+        <form action="security_edit.php?id=<?=$user['id']?>" method="post">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -50,21 +58,18 @@
                                 <!-- email -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="john@example.com">
+                                    <input type="text" name="email" id="simpleinput" class="form-control" value="<?=$user["email"]?>">
                                 </div>
-
                                 <!-- password -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Пароль</label>
-                                    <input type="password" id="simpleinput" class="form-control">
+                                    <input type="password" name="password" id="simpleinput" class="form-control">
                                 </div>
-
                                 <!-- password confirmation-->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Подтверждение пароля</label>
                                     <input type="password" id="simpleinput" class="form-control">
                                 </div>
-
 
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                     <button class="btn btn-warning">Изменить</button>
@@ -76,6 +81,13 @@
                 </div>
             </div>
         </form>
+        <?else:?>
+            <?
+            set_flash_massage('danger',"у Вас нет прав");
+            display_flash_message('danger');
+            ?>
+            <a class="btn btn-success" href="users.php">Назад</a>
+        <?endif;?>
     </main>
 
     <script src="js/vendors.bundle.js"></script>
@@ -112,3 +124,4 @@
     </script>
 </body>
 </html>
+

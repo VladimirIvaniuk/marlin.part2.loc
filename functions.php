@@ -204,6 +204,7 @@ function edit($data, $user_id)
     $sql = "UPDATE users SET $fields WHERE id=$user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute($data);
+    return true;
 }
 /**
  * @param $status
