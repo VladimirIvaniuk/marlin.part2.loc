@@ -201,6 +201,7 @@ function edit($data, $user_id)
         $fields .= $key . "=:" . $key . ",";
     }
     $fields = rtrim($fields, ',');
+
     $sql = "UPDATE users SET $fields WHERE id=$user_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute($data);
@@ -211,11 +212,18 @@ function edit($data, $user_id)
  * Description: установить статус
  * @return null
  */
-function set_status($status)
+function set_status()
 {
-    return $status;
-}
 
+}
+function getStatus(){
+    $table_name="users";
+    $column_name="status";
+    $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
+    $sql = 'SHOW COLUMNS FROM '.$table_name.' WHERE field="'.$column_name.'"';
+    $row = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+    return $row['Type'];
+}
 /**
  * @param array $image
  * Description: загрузить аватар
