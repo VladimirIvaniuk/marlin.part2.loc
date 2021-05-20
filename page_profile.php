@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once "functions.php";
-require_once "functions.php";
 is_not_logged();
 $user=getUserById($_GET['id']);
 if(!$user){
