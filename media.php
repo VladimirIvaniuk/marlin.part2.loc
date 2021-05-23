@@ -55,7 +55,7 @@ dump($item);
                             </div>
                             <div class="panel-content">
                                 <div class="form-group">
-                                    <img src="images/<?=$item['image']?>" alt="" class="img-responsive" width="200">
+                                    <img src="images/<?=($item['image'])?$item['image']:"default.png"?>" alt="" class="img-responsive" width="200">
                                 </div>
 
                                 <div class="form-group">

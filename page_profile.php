@@ -55,7 +55,7 @@ if(!$user){
                         <div class="row no-gutters row-grid">
                             <div class="col-12">
                                 <div class="d-flex flex-column align-items-center justify-content-center p-4">
-                                    <img src="images/<?=$user['image']?>" class="rounded-circle shadow-2 img-thumbnail" alt="">
+                                    <img src="images/<?=($user['image'])?$user['image']:"default.png"?>" class="rounded-circle shadow-2 img-thumbnail" alt="">
                                     <h5 class="mb-0 fw-700 text-center mt-3">
                                         <?=$user['username']?>
                                         <small class="text-muted mb-0"><?=$user['address']?></small>
