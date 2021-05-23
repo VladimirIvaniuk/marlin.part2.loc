@@ -246,6 +246,26 @@ function upload_avatar(array $image)
 //    ];
 //    return $array_social_links;
 //}
+function deleteUser($id){
+    $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
+    $user=getUserById($id);
+    $this_user=getUser();
+    $user_id=$user['id'];
+    if($this_user['id']!=$user['id'] and $this_user["role"]=="admin"){
+            $sql = "DELETE FROM users WHERE id=$user_id";
+            $pdo->exec($sql);
+            set_flash_massage('success', "Пользователь удален");
+        redirect_to("users.php");
+    }
+    elseif ($this_user['id']==$user_id){
+        $sql = "DELETE FROM users WHERE id=$user_id";
+        $pdo->exec($sql);
+        logout();
+    }else{
+        set_flash_massage('danger', "Нет прав");
+        redirect_to("users.php");
+    }
+}
 function dump($arr, $var_dump = false)
 {
     echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";

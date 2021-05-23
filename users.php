@@ -42,6 +42,7 @@ $item=getUser();
 
         <main id="js-page-content" role="main" class="page-content mt-3">
             <?php display_flash_message('success');?>
+            <?php display_flash_message('danger');?>
             <div class="subheader">
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список пользователей
@@ -92,7 +93,7 @@ $item=getUser();
                                             <i class="fa fa-camera"></i>
                                             Загрузить аватар
                                         </a>
-                                        <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                        <a href="delete_user.php?id=<?=$user['id']?>" class="dropdown-item delete" onclick="return confirm('are you sure?');">
                                             <i class="fa fa-window-close"></i>
                                             Удалить
                                         </a>
@@ -159,7 +160,6 @@ $item=getUser();
 
         $(document).ready(function()
         {
-
             $('input[type=radio][name=contactview]').change(function()
                 {
                     if (this.value == 'grid')

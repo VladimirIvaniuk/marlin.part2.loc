@@ -3,7 +3,7 @@ require_once "functions.php";
 is_not_logged();
 $users=get_users();
 $item=getUser();
-dump($item);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
