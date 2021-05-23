@@ -14,7 +14,9 @@ function get_user_by_email($email)
     $result = $statement->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
-function getUserById($id){
+
+function getUserById($id)
+{
     $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
     $sql = "SELECT * FROM users WHERE id = :id";
     $statement = $pdo->prepare($sql);
@@ -22,6 +24,7 @@ function getUserById($id){
     $result = $statement->fetch(PDO::FETCH_ASSOC);
     return $result;
 }
+
 function get_users()
 {
     $pdo = new PDO('mysql:host=localhost; dbname=marlin_part_2;', "root", "root");
@@ -165,8 +168,8 @@ function add_user_admin($data, $file)
     $email = $data['email'];
     $password = $data['password'];
     $user = get_user_by_email($email);
-    if($file){
-        $data=$data+$file;
+    if ($file) {
+        $data = $data + $file;
     }
     if (!$user) {
         $id_user = add_users($email, $password);
@@ -191,13 +194,13 @@ function add_user_admin($data, $file)
 function edit($data, $user_id)
 {
     $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
-    if(isset($data["avatar"])){
+    if (isset($data["avatar"])) {
         $data['image'] = upload_avatar($data["avatar"]);
         unset($data['avatar']);
         unset($data['password']);
     }
     $fields = '';
-    foreach($data as $key => $value) {
+    foreach ($data as $key => $value) {
         $fields .= $key . "=:" . $key . ",";
     }
     $fields = rtrim($fields, ',');
@@ -207,6 +210,7 @@ function edit($data, $user_id)
     $stmt->execute($data);
     return true;
 }
+
 /**
  * @param $status
  * Description: установить статус
@@ -216,14 +220,17 @@ function set_status()
 {
 
 }
-function getStatus(){
-    $table_name="users";
-    $column_name="status";
+
+function getStatus()
+{
+    $table_name = "users";
+    $column_name = "status";
     $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
-    $sql = 'SHOW COLUMNS FROM '.$table_name.' WHERE field="'.$column_name.'"';
+    $sql = 'SHOW COLUMNS FROM ' . $table_name . ' WHERE field="' . $column_name . '"';
     $row = $pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
     return $row['Type'];
 }
+
 /**
  * @param array $image
  * Description: загрузить аватар
@@ -238,6 +245,7 @@ function upload_avatar(array $image)
     move_uploaded_file($from, $to);
     return $filename;
 }
+
 //function add_social_link($data){
 //    $array_social_links=[
 //        'vk'=>$data['vk'],
@@ -246,26 +254,35 @@ function upload_avatar(array $image)
 //    ];
 //    return $array_social_links;
 //}
-function deleteUser($id){
+function deleteUser($id)
+{
     $pdo = new PDO('mysql:host=localhost;dbname=marlin_part_2;', "root", "root");
-    $user=getUserById($id);
-    $this_user=getUser();
-    $user_id=$user['id'];
-    if($this_user['id']!=$user['id'] and $this_user["role"]=="admin"){
-            $sql = "DELETE FROM users WHERE id=$user_id";
-            $pdo->exec($sql);
-            set_flash_massage('success', "Пользователь удален");
+    $user = getUserById($id);
+    $this_user = getUser();
+    $user_id = $user['id'];
+
+    if ($this_user['id'] != $user['id'] and $this_user["role"] == "admin") {
+        deleteImg($user['image']);
+        $sql = "DELETE FROM users WHERE id=$user_id";
+        $pdo->exec($sql);
+        set_flash_massage('success', "Пользователь удален");
         redirect_to("users.php");
-    }
-    elseif ($this_user['id']==$user_id){
+    } elseif ($this_user['id'] == $user_id) {
+        deleteImg($user['image']);
         $sql = "DELETE FROM users WHERE id=$user_id";
         $pdo->exec($sql);
         logout();
-    }else{
+    } else {
         set_flash_massage('danger', "Нет прав");
         redirect_to("users.php");
     }
 }
+function deleteImg($name)
+{
+    $img = 'images/' . $name;
+    if (file_exists($img)) unlink($img);
+}
+
 function dump($arr, $var_dump = false)
 {
     echo "<pre style='background: #222;color: silver; font-weight: 800; padding: 20px; border: 10px double blue;'>";
